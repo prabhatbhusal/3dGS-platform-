@@ -244,7 +244,9 @@ export default function HomePage({ apiBase, token }: HomePageProps) {
                     <div className="h-2 overflow-hidden rounded-full bg-slate-800">
                       <div className="h-full rounded-full bg-fuchsia-500" style={{ width: `${uploadProgress}%` }} />
                     </div>
-                    <p className="mt-4 text-sm leading-6 text-slate-400">Resumable upload. Safe to close the tab once chunks are moving.</p>
+                    <p className="mt-4 text-sm leading-6 text-slate-400">
+                      {uploading ? 'Uploading… Please wait.' : uploadSuccess ? 'Upload complete.' : 'Resumable upload. Safe to close the tab once chunks are moving.'}
+                    </p>
                     {uploadError ? <p className="mt-3 text-sm text-red-300">{uploadError}</p> : null}
                     {uploadSuccess ? <p className="mt-3 text-sm text-emerald-300">{uploadSuccess}</p> : null}
                   </div>
