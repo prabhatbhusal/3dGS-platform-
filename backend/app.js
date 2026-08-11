@@ -64,9 +64,22 @@ app.get("/", (req, res) => {
   res.send("Hello, Express! Backend API is up.");
 });
 
+const sampleProjects = [
+  { id: 1, name: 'Madan Ashrit College', details: '21 scenes · 17 doorways · published 28 Jul', status: 'live' },
+  { id: 2, name: 'Patan Durbar — courtyards', details: '6 scenes · heritage', status: 'live' },
+  { id: 3, name: 'Kirtipur campus', details: '3 scenes · capture in progress', status: 'draft' },
+  { id: 4, name: 'New project', details: 'start from an LCC file', status: 'draft' },
+]
+
 app.get("/api/status", (req, res) => {
   res.json({ status: "ok", timestamp: Date.now() });
 });
+
+app.get('/api/projects', async (req, res) => {
+  const user = await getUserFromToken(req)
+  if (!user) return res.status(401).json({ error: 'unauthorized' })
+  res.json(sampleProjects)
+})
 
 // Auth
 app.post("/api/auth/register", async (req, res) => {
@@ -97,10 +110,15 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
   if (!user) return res.status(401).json({ error: 'unauthorized' });
   if (!req.file) return res.status(400).json({ error: 'file required' });
   try {
-    // respond with accessible path
+    const projectId = req.body.projectId ? Number(req.body.projectId) : null;
     const url = `/uploads/${path.basename(req.file.path)}`;
-    await audit({ userId: user.id, action: 'upload_file', meta: { originalName: req.file.originalname, size: req.file.size }, ip: req.ip });
-    res.json({ url, originalName: req.file.originalname });
+    await audit({
+      userId: user.id,
+      action: 'upload_file',
+      meta: { originalName: req.file.originalname, size: req.file.size, projectId },
+      ip: req.ip,
+    });
+    res.json({ url, originalName: req.file.originalname, projectId });
   } catch (e) {
     pino.error(e);
     res.status(500).json({ error: 'upload failed' });

@@ -88,6 +88,13 @@ Notes:
 docker compose exec backend npx prisma migrate deploy --schema=/app/prisma/schema.prisma
 ```
 
+Seed an admin user (after migrations):
+
+```bash
+cd backend
+npm run seed
+```
+
 
 ## Notes
 - This is a minimal, in-memory implementation intended for local development and testing.
