@@ -182,7 +182,7 @@ export default function HomePage({ apiBase, token }: HomePageProps) {
                   <p className="text-xs uppercase tracking-[0.2em] text-slate-400">Projects</p>
                   <h2 className="mt-2 text-2xl font-semibold text-white">Choose a project</h2>
                 </div>
-                <span className="rounded-full bg-slate-800 px-3 py-2 text-xs uppercase tracking-[0.18em] text-slate-300">{PROJECTS.length} active</span>
+                <span className="rounded-full bg-slate-800 px-3 py-2 text-xs uppercase tracking-[0.18em] text-slate-300">{projects.length} active</span>
               </div>
               <div className="mt-6 space-y-3">
                 {loadingProjects ? (
@@ -425,4 +425,23 @@ export default function HomePage({ apiBase, token }: HomePageProps) {
               type="button"
               onClick={() => setStep(Math.max(step - 1, 0))}
               disabled={!canGoBack}
-              className="inline-flex items-center gap-2 rounded-3xl border border-slate-700 bg-slate-950/95 px-4 py-3 text-sm text-slate-300 transition hover:border-slate-600 disabled:cursor-not-allowed
+              className="inline-flex items-center gap-2 rounded-3xl border border-slate-700 bg-slate-950/95 px-4 py-3 text-sm text-slate-300 transition hover:border-slate-600 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Back
+            </button>
+            <button
+              type="button"
+              onClick={() => setStep(Math.min(step + 1, STEPS.length - 1))}
+              disabled={!canGoNext}
+              className="inline-flex items-center gap-2 rounded-3xl bg-fuchsia-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-fuchsia-500 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {canGoNext ? 'Next' : 'Finish'}
+              <ArrowRight className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
